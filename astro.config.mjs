@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   site: 'https://jamilebastos.github.io',
-  base: '/jamile-dev-blog',
+  base: '/blog',
   output: 'static',
   integrations: [
     tailwind({
