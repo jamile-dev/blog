@@ -4,6 +4,7 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   site: 'https://jamile.dev',
+  base: '/',
   output: 'static',
   integrations: [
     tailwind({
