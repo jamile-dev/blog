@@ -1,0 +1,45 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TagList from '@components/TagList.astro';
+import { formatDate, readingTime, type BlogPost } from '@i18n/posts';
+import { labels, withBase } from '@i18n/site';
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const lang = post.data.lang;
+const minutes = readingTime(post.body);
+const t = labels[lang];
+---
+
+<BaseLayout lang={lang} title={post.data.title} description={post.data.description} image={post.data.heroImage}>
+  <article class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_16rem]">
+    <div class="panel p-4 sm:p-6">
+      <header class="mb-6 space-y-4">
+        {post.data.heroImage && (
+          <img src={withBase(post.data.heroImage)} alt={post.data.heroAlt ?? ''} class="aspect-[16/7] w-full border border-dashed border-line object-cover" />
+        )}
+        <h1 class="text-3xl font-bold leading-tight">{post.data.title}</h1>
+        <div class="flex flex-wrap gap-2 text-sm font-bold text-muted">
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, lang)}</time>
+          <span>/</span>
+          <span>{minutes} {t.minRead}</span>
+        </div>
+        <TagList lang={lang} tags={post.data.tags} />
+      </header>
+      <div class="dash mb-6"></div>
+      <div class="prose prose-invert prose-blog">
+        <slot />
+      </div>
+    </div>
+
+    <aside class="hidden lg:block">
+      <div class="sticky top-8 panel p-4">
+        <h2 class="title-mark mb-3 font-bold">{t.recent}</h2>
+        <p class="text-sm text-muted">{post.data.description}</p>
+      </div>
+    </aside>
+  </article>
+</BaseLayout>

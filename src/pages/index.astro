@@ -1,0 +1,18 @@
+---
+import { withBase } from '@i18n/site';
+
+const target = withBase('/en/');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>Jamile Dev Blog</title>
+  </head>
+  <body>
+    <a href={target}>Continue to Jamile Dev Blog</a>
+  </body>
+</html>

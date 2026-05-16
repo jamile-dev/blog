@@ -1,0 +1,32 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PostListItem from '@components/PostListItem.astro';
+import { getPublishedPosts } from '@i18n/posts';
+import { labels, site, withBase } from '@i18n/site';
+
+const lang = 'en' as const;
+const t = labels[lang];
+const posts = (await getPublishedPosts(lang)).slice(0, 5);
+---
+
+<BaseLayout lang={lang} title="Home" description={site.description[lang]}>
+  <section class="panel p-4 sm:p-6">
+    <h1 class="title-mark mb-4 text-xl font-bold">System notes, human context.</h1>
+    <p class="max-w-3xl text-muted">
+      Welcome to {site.name}: a compact place for engineering notes, implementation diaries, and the occasional
+      field report from the messy middle of building software.
+    </p>
+  </section>
+
+  <section class="mt-8 panel p-4 sm:p-6">
+    <h2 class="title-mark mb-4 text-lg font-bold">{t.latest}</h2>
+    {posts.length > 0 ? (
+      <ul class="space-y-4">
+        {posts.map((post) => <PostListItem post={post} lang={lang} />)}
+      </ul>
+    ) : (
+      <p class="text-muted">{t.empty}</p>
+    )}
+    <a class="mt-4 inline-block text-link" href={withBase('/en/blog/')}>{t.morePosts}</a>
+  </section>
+</BaseLayout>

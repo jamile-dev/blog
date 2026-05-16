@@ -1,0 +1,19 @@
+---
+import { tagUrl } from '@i18n/posts';
+import type { Lang } from '@i18n/site';
+
+interface Props {
+  lang: Lang;
+  tags: string[];
+}
+
+const { lang, tags } = Astro.props;
+---
+
+<ul class="flex flex-wrap gap-2">
+  {tags.map((tag) => (
+    <li>
+      <a class="tag" href={tagUrl(lang, tag)}>{tag}</a>
+    </li>
+  ))}
+</ul>

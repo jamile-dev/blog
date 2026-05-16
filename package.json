@@ -1,0 +1,26 @@
+{
+  "name": "jamile-dev-blog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "0.9.4",
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/tailwind": "5.1.5",
+    "@tailwindcss/typography": "^0.5.15",
+    "astro": "5.5.2",
+    "rollup": "npm:@rollup/wasm-node@4.60.4",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@4.60.4"
+  }
+}

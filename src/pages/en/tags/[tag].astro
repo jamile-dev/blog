@@ -1,0 +1,29 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PostListItem from '@components/PostListItem.astro';
+import { getAllTags, getPublishedPosts } from '@i18n/posts';
+import { labels } from '@i18n/site';
+
+export async function getStaticPaths() {
+  const lang = 'en' as const;
+  const tags = await getAllTags(lang);
+  return tags.map(({ tag }) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const lang = 'en' as const;
+const { tag } = Astro.props;
+const posts = (await getPublishedPosts(lang)).filter((post) => post.data.tags.includes(tag));
+const t = labels[lang];
+---
+
+<BaseLayout lang={lang} title={`${t.tags}: ${tag}`}>
+  <section class="panel p-4 sm:p-6">
+    <h1 class="title-mark mb-4 text-xl font-bold">{t.tags}: {tag}</h1>
+    <ul class="space-y-5">
+      {posts.map((post) => <PostListItem post={post} lang={lang} />)}
+    </ul>
+  </section>
+</BaseLayout>

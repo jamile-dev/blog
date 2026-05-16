@@ -1,0 +1,81 @@
+---
+import { langLabels, labels, localizePath, nav, site, stripBase, withBase, type Lang } from '@i18n/site';
+
+interface Props {
+  lang: Lang;
+  pathname: string;
+}
+
+const { lang, pathname } = Astro.props;
+const t = labels[lang];
+const items = nav[lang];
+const cleanPathname = stripBase(pathname);
+---
+
+<header class="group/header relative mb-8 flex flex-wrap items-start justify-between gap-4" id="site-header">
+  <a href={withBase(`/${lang}/`)} class="title-mark whitespace-nowrap font-bold text-lg text-link" aria-label={site.name}>
+    {site.name}
+  </a>
+
+  <nav
+    id="site-menu"
+    class="panel order-3 hidden w-full p-3 group-[.menu-open]/header:block sm:order-none sm:block sm:w-auto sm:border-0 sm:bg-transparent sm:p-0"
+    aria-label="Main navigation"
+  >
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+      {items.map((item) => (
+        <a
+          href={withBase(item.href)}
+          class:list={['text-link', cleanPathname === item.href || cleanPathname.startsWith(item.href + '/') ? 'text-lime' : '']}
+          aria-current={cleanPathname === item.href ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+      <a href={withBase(`/${lang}/rss.xml`)} class="text-link">{t.rss}</a>
+    </div>
+  </nav>
+
+  <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1" aria-label={t.language}>
+      {(Object.keys(langLabels) as Lang[]).map((targetLang) => (
+        <a
+          href={localizePath(pathname, targetLang)}
+          class:list={[
+            'border border-line px-1.5 py-0.5 text-xs font-bold hover:border-lime hover:text-lime',
+            targetLang === lang ? 'bg-lime text-ink' : '',
+          ]}
+        >
+          {langLabels[targetLang]}
+        </a>
+      ))}
+    </div>
+
+    <button id="theme-toggle" class="theme-toggle border border-line p-1 hover:border-lime hover:text-lime transition-colors" aria-label={t.theme} onclick="window.__toggleTheme?.()">
+      <span class="block dark:hidden" aria-hidden="true">😴</span>
+      <span class="hidden dark:block" aria-hidden="true">☀️</span>
+    </button>
+
+    <button
+      id="menu-toggle"
+      class="border border-line p-1 hover:border-lime hover:text-lime sm:hidden"
+      aria-label={t.menu}
+      aria-expanded="false"
+      aria-controls="site-menu"
+    >
+      <span class="menu-closed" aria-hidden="true">☰</span>
+      <span class="menu-open hidden" aria-hidden="true">×</span>
+    </button>
+  </div>
+</header>
+
+<script is:inline>
+  const header = document.getElementById('site-header');
+  const menuButton = document.getElementById('menu-toggle');
+  menuButton?.addEventListener('click', () => {
+    const isOpen = header?.classList.toggle('menu-open') ?? false;
+    menuButton.setAttribute('aria-expanded', String(isOpen));
+    menuButton.querySelector('.menu-closed')?.classList.toggle('hidden', isOpen);
+    menuButton.querySelector('.menu-open')?.classList.toggle('hidden', !isOpen);
+  });
+</script>

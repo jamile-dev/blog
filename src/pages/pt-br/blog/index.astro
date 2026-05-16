@@ -1,0 +1,27 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PostListItem from '@components/PostListItem.astro';
+import TagList from '@components/TagList.astro';
+import { getAllTags, getPublishedPosts } from '@i18n/posts';
+import { labels } from '@i18n/site';
+
+const lang = 'pt-br' as const;
+const t = labels[lang];
+const posts = await getPublishedPosts(lang);
+const tags = await getAllTags(lang);
+---
+
+<BaseLayout lang={lang} title={t.allPosts}>
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
+    <section class="panel p-4 sm:p-6">
+      <h1 class="title-mark mb-4 text-xl font-bold">{t.allPosts}</h1>
+      <ul class="space-y-5">
+        {posts.map((post) => <PostListItem post={post} lang={lang} />)}
+      </ul>
+    </section>
+    <aside class="panel h-fit p-4">
+      <h2 class="title-mark mb-4 font-bold">{t.tags}</h2>
+      <TagList lang={lang} tags={tags.map(({ tag }) => tag)} />
+    </aside>
+  </div>
+</BaseLayout>

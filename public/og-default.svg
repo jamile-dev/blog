@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0d1110"/>
+  <rect x="72" y="72" width="1056" height="486" fill="#151b18" stroke="#314036" stroke-dasharray="12 12"/>
+  <text x="112" y="210" fill="#b7f35a" font-family="monospace" font-size="48"># Jamile Dev Blog</text>
+  <text x="112" y="296" fill="#d7ffe8" font-family="monospace" font-size="34">notes on code, systems, and the work between</text>
+</svg>

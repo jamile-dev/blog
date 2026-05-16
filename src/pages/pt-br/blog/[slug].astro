@@ -1,0 +1,19 @@
+---
+import ArticleLayout from '@layouts/ArticleLayout.astro';
+import { getPublishedPosts } from '@i18n/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts('pt-br');
+  return posts.map((post) => ({
+    params: { slug: post.slug.split('/').pop() },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<ArticleLayout post={post}>
+  <Content />
+</ArticleLayout>

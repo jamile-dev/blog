@@ -1,0 +1,17 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import TagList from '@components/TagList.astro';
+import { getAllTags } from '@i18n/posts';
+import { labels } from '@i18n/site';
+
+const lang = 'pt-br' as const;
+const t = labels[lang];
+const tags = await getAllTags(lang);
+---
+
+<BaseLayout lang={lang} title={t.tags}>
+  <section class="panel p-4 sm:p-6">
+    <h1 class="title-mark mb-4 text-xl font-bold">{t.tags}</h1>
+    <TagList lang={lang} tags={tags.map(({ tag }) => tag)} />
+  </section>
+</BaseLayout>

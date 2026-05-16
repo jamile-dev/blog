@@ -1,0 +1,19 @@
+---
+import { formatDate, postUrl, type BlogPost } from '@i18n/posts';
+import type { Lang } from '@i18n/site';
+
+interface Props {
+  post: BlogPost;
+  lang: Lang;
+}
+
+const { post, lang } = Astro.props;
+---
+
+<li class="grid gap-1 sm:grid-cols-[9.5rem_1fr] sm:gap-4">
+  <time class="text-muted" datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, lang)}</time>
+  <div>
+    <a href={postUrl(post)} class="text-link font-bold">{post.data.title}</a>
+    {post.data.description && <p class="mt-1 text-sm italic text-muted">{post.data.description}</p>}
+  </div>
+</li>

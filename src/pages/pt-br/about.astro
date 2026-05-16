@@ -1,0 +1,21 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const lang = 'pt-br' as const;
+---
+
+<BaseLayout lang={lang} title="Sobre" description="Sobre o Jamile Dev Blog">
+  <section class="panel p-4 sm:p-6">
+    <h1 class="title-mark mb-4 text-xl font-bold">Sobre</h1>
+    <div class="max-w-3xl space-y-4 text-muted">
+      <p>
+        Esta é a primeira versão do Jamile Dev Blog: um caderno técnico pessoal com foco em engenharia prática,
+        explicações claras e aprendizado em movimento.
+      </p>
+      <p>
+        O design é compacto de propósito: bastante texto, contraste forte, um pouco de energia terminal e estrutura
+        suficiente para deixar os posts fáceis de escanear.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

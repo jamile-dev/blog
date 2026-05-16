@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PostListItem from '@components/PostListItem.astro';
+import { getPublishedPosts } from '@i18n/posts';
+import { labels } from '@i18n/site';
+
+const lang = 'pt-br' as const;
+const t = labels[lang];
+const posts = await getPublishedPosts(lang);
+---
+
+<BaseLayout lang={lang} title={t.archive}>
+  <section class="panel p-4 sm:p-6">
+    <h1 class="title-mark mb-4 text-xl font-bold">{t.archive}</h1>
+    <ul class="space-y-5">
+      {posts.map((post) => <PostListItem post={post} lang={lang} />)}
+    </ul>
+  </section>
+</BaseLayout>

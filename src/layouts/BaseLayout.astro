@@ -1,0 +1,86 @@
+---
+import Header from '@components/Header.astro';
+import { labels, site, withBase, type Lang } from '@i18n/site';
+import '@styles/global.css';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { lang, title, description = site.description[lang], image = '/og-default.svg' } = Astro.props;
+const pageTitle = title ? `${title} | ${site.name}` : site.name;
+const canonical = new URL(Astro.url.pathname, site.url).toString();
+const imageUrl = new URL(withBase(image), site.url).toString();
+const t = labels[lang];
+---
+
+<!doctype html>
+<html lang={lang} class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href={withBase('/favicon.svg')} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} ${lang}`} href={withBase(`/${lang}/rss.xml`)} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <title>{pageTitle}</title>
+    <meta name="title" content={pageTitle} />
+    <meta name="description" content={description} />
+    <meta name="author" content={site.author} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <script is:inline>
+      window.__themeStore = {
+        get() {
+          try {
+            return globalThis.localStorage?.getItem('theme');
+          } catch {
+            return null;
+          }
+        },
+        set(value) {
+          try {
+            globalThis.localStorage?.setItem('theme', value);
+          } catch {}
+        },
+      };
+      let storedTheme = window.__themeStore.get();
+      const theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      window.__themeStore.set(theme);
+      window.__toggleTheme = () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        window.__themeStore.set(isDark ? 'dark' : 'light');
+      };
+    </script>
+  </head>
+  <body>
+    <div class="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-4 md:py-8">
+      <Header lang={lang} pathname={Astro.url.pathname} />
+      <main class="grow">
+        <slot />
+      </main>
+      <footer class="mt-20 flex flex-col gap-3 border-t border-dashed border-line pt-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+        <p>&copy; {new Date().getFullYear()} {site.author}</p>
+        <nav class="flex flex-wrap gap-3" aria-label="Footer">
+          <a class="text-link" href={withBase(`/${lang}/`)}>{t.backHome}</a>
+          <a class="text-link" href={site.social.github}>GitHub</a>
+          <a class="text-link" href={site.social.linkedin}>LinkedIn</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>
